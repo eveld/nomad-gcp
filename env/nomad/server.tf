@@ -1,9 +1,11 @@
+data "google_compute_zones" "available" {}
+
 // The Nomad server group.
 resource "google_compute_instance_group_manager" "server" {
   name               = "server-group-manager"
-  instance_template  = "${google_compute_instance_template.server.self_link}"
+  instance_template  = google_compute_instance_template.server.self_link
   base_instance_name = "server"
-  zone               = var.instance.zone
+  zone               = data.google_compute_zones.available.names[0]
   target_size        = var.instance.count
 }
 

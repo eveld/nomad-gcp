@@ -4,7 +4,6 @@ variable "url" {
 
 variable "instance" {
     type = object({
-        zone = string
         count = number
         type = string
         image = string

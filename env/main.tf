@@ -3,8 +3,6 @@ provider "google" {
   region      = var.region
 }
 
-data "google_project" "project" {}
-
 module "nomad" {
   source = "./nomad"
 

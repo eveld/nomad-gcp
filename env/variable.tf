@@ -11,7 +11,6 @@ variable "nomad" {
         url = string
         instance = object({
             tag = string
-            zone = string
             count = number
             type = string
             image = string
