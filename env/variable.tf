@@ -6,10 +6,6 @@ variable "region" {
     type = string
 }
 
-variable "participant" {
-    type = string
-}
-
 variable "nomad" {
     type = object({
         url = string
