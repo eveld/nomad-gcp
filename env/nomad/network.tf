@@ -31,6 +31,19 @@ resource "google_compute_forwarding_rule" "nomad" {
   ports = ["4646"]
 }
 
+// Allow health checks to reach the instances.
+resource "google_compute_firewall" "health-checks" {
+  name    = "health-checks"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+  }
+
+  source_ranges = ["35.191.0.0/16","130.211.0.0/22"]
+  target_tags = ["allow-health-checks"]
+}
+
 // Output the internal loadbalancer IP for Nomad.
 output "nomad" {
   value = google_compute_forwarding_rule.nomad.ip_address

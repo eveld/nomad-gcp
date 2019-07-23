@@ -14,7 +14,7 @@ resource "google_compute_instance_template" "server" {
   name_prefix  = "server-template-"
   description = "This template is used for server instances."
 
-  tags = ["server", var.instance.tag]
+  tags = ["server", var.instance.tag, "allow-health-checks"]
 
   labels = {
     environment = "dev"
