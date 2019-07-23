@@ -1,12 +1,11 @@
-data "google_compute_zones" "available" {}
 
 // The Nomad server group.
-resource "google_compute_instance_group_manager" "server" {
-  name               = "server-group-manager"
-  instance_template  = google_compute_instance_template.server.self_link
+resource "google_compute_region_instance_group_manager" "server" {
+  name = "server-group-manager"
   base_instance_name = "server"
-  zone               = data.google_compute_zones.available.names[0]
-  target_size        = var.instance.count
+  instance_template = google_compute_instance_template.server.self_link
+  region = var.server_region
+  target_size = var.server_count
 }
 
 // The instance template for the Nomad servers.
@@ -14,14 +13,14 @@ resource "google_compute_instance_template" "server" {
   name_prefix  = "server-template-"
   description = "This template is used for server instances."
 
-  tags = ["server", var.instance.tag, "allow-health-checks"]
+  tags = ["server", var.server_tag, "allow-health-checks"]
 
   labels = {
     environment = "dev"
   }
 
   instance_description = "server instance"
-  machine_type         = var.instance.type
+  machine_type         = var.server_type
   can_ip_forward       = false
 
   scheduling {
@@ -30,7 +29,7 @@ resource "google_compute_instance_template" "server" {
   }
 
   disk {
-    source_image = var.instance.image
+    source_image = var.server_image
     auto_delete  = true
     boot         = true
   }
@@ -56,7 +55,7 @@ resource "google_compute_instance_template" "server" {
 data "template_file" "metadata_startup_script" {
   template = "${file("${path.module}/files/bootstrap.sh")}"
   vars = {
-    nomad_url = var.url
-    join_tag = var.instance.tag
+    nomad_url = var.nomad_url
+    join_tag = var.server_tag
   }
 }

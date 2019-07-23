@@ -6,14 +6,18 @@ variable "region" {
     type = string
 }
 
-variable "nomad" {
+variable "environment_id" {
+    type = string
+}
+
+variable "nomad_url" {
+    type = string
+}
+
+variable "server" {
     type = object({
-        url = string
-        instance = object({
-            tag = string
-            count = number
-            type = string
-            image = string
-        })
+        count = number
+        type = string
+        image = string
     })
 }
