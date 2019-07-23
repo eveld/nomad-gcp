@@ -1,9 +1,14 @@
-job "consul" {
+job "consul-server" {
     datacenters = ["dc1"]
     type = "service"
 
     group "server" {
         count = 3
+
+        constraint {
+            attribute = "${attr.platform.gce.tag.server}"
+            value = "true"
+        }
 
         constraint {
             operator = "distinct_hosts"
